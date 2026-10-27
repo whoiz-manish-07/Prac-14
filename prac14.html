@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSQuiz | Data Structures Assessment</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+6
+
+<style>
+body {
+background: #0b1120;
+font-family: Arial, sans-serif;
+}
+.quiz-box {
+background: #111c31;
+border: 1px solid #263650;
+}
+.answer-btn {
+background: #17243b;
+border: 1px solid #30415d;
+transition: 0.25s;
+}
+.answer-btn:hover:not(:disabled) {
+background: #203451;
+border-color: #60a5fa;
+transform: translateY(-2px);
+}
+.correct {
+background: #123b32 !important;
+border-color: #34d399 !important;
+}
+.wrong {
+background: #48232b !important;
+border-color: #fb7185 !important;
+}
+.progress-fill {
+transition: width 0.4s ease;
+}
+.main-btn {
+background: #3b82f6;
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+7
+
+transition: 0.25s;
+}
+.main-btn:hover {
+background: #2563eb;
+transform: translateY(-1px);
+}
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+<div class="quiz-box w-full max-w-xl rounded-2xl p-6 sm:p-8 shadow-2xl">
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="bg-blue-500 text-white rounded-lg p-2 font-bold">
+DS
+</div>
+<div>
+<h1 class="text-white text-xl font-bold">
+DSQuiz
+</h1>
+<p class="text-gray-400 text-xs">
+DATA STRUCTURES ASSESSMENT
+</p>
+</div>
+</div>
+<span class="text-blue-300 text-sm border border-blue-900
+bg-blue-950 px-3 py-1 rounded-full">
+Beginner
+</span>
+</div>
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+8
+
+<!-- Quiz Content -->
+<div id="quizContent">
+<div class="mb-6">
+<p id="questionNumber"
+class="text-blue-400 text-sm font-semibold mb-3">
+QUESTION 01 OF 10
+</p>
+<h2 id="question"
+
+class="text-white text-xl sm:text-2xl font-bold leading-
+relaxed">
+
+Question will appear here
+</h2>
+<p class="text-gray-400 text-sm mt-3">
+Select the best answer from the options below.
+</p>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-gray-800 rounded-full h-2 mb-6">
+<div id="progressBar"
+class="progress-fill bg-blue-500 h-2 rounded-full"
+
+style="width: 10%">
+
+</div>
+</div>
+<!-- Answer Options -->
+<div id="options" class="space-y-3"></div>
+<!-- Feedback -->
+<p id="message"
+aria-live="polite"
+class="mt-5 text-sm font-semibold">
+</p>
+<!-- Next Button -->
+<button id="nextBtn"
+onclick="nextQuestion()"
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+9
+class="main-btn text-white w-full rounded-lg p-3 mt-5
+font-semibold">
+Next Question →
+</button>
+<p id="score"
+class="text-center text-gray-400 text-sm mt-5">
+Score: 0
+</p>
+</div>
+<!-- Result Screen -->
+<div id="resultContent" class="hidden text-center py-6">
+<div class="text-5xl mb-5"> </div>
+<p class="text-blue-400 text-sm font-semibold tracking-widest mb-3">
+ASSESSMENT COMPLETED
+</p>
+<h2 class="text-white text-3xl font-bold mb-3">
+Your Results
+</h2>
+<p id="resultMessage" class="text-gray-400 mb-7">
+Here is your performance summary.
+</p>
+<div class="bg-gray-900 border border-gray-700 rounded-xl p-6 mb-6">
+<p class="text-gray-400 text-sm mb-2">
+Final Score
+</p>
+<p id="finalScore"
+class="text-white text-5xl font-bold">
+0/10
+</p>
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+10
+
+<p id="percentage"
+class="text-blue-400 text-xl font-semibold mt-3">
+0%
+</p>
+</div>
+<button onclick="restartQuiz()"
+
+class="main-btn text-white w-full rounded-lg p-3 font-
+semibold">
+
+Retake Assessment ↻
+</button>
+</div>
+<!-- Footer -->
+<div class="border-t border-gray-700 mt-8 pt-5 text-center">
+<p class="text-gray-500 text-xs">
+DSQuiz • Learn. Practice. Improve.
+</p>
+</div>
+</div>
+<script>
+// Data Structures questions and correct answers
+let questions = [
+{
+question: "1. Which data structure follows the LIFO principle?",
+options: [
+"Queue",
+"Stack",
+"Linked List",
+"Tree"
+],
+answer: "Stack"
+},
+{
+question: "2. Which principle does a queue follow?",
+options: [
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+11
+
+"LIFO",
+"FIFO",
+"Random Order",
+"Binary Order"
+],
+answer: "FIFO"
+},
+{
+question: "3. Which operation adds an element to a stack?",
+options: [
+"Pop",
+"Delete",
+"Push",
+"Search"
+],
+answer: "Push"
+},
+{
+question: "4. Which operation removes the top element from a
+stack?",
+options: [
+"Push",
+"Peek",
+"Insert",
+"Pop"
+],
+answer: "Pop"
+},
+{
+question: "5. Which data structure consists of nodes connected
+using links?",
+options: [
+"Array",
+"Linked List",
+"Stack only",
+"Integer"
+],
+answer: "Linked List"
+},
+{
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+12
+
+question: "6. Which data structure is commonly used in Breadth-
+First Search (BFS)?",
+
+options: [
+"Stack",
+"Queue",
+"Array only",
+"Heap only"
+],
+answer: "Queue"
+},
+{
+question: "7. Which searching algorithm requires sorted data to
+work correctly?",
+options: [
+"Linear Search",
+"Binary Search",
+"Sequential Search",
+"Simple Traversal"
+],
+answer: "Binary Search"
+},
+{
+question: "8. What is the worst-case time complexity of Linear
+Search?",
+options: [
+"O(1)",
+"O(log n)",
+"O(n)",
+"O(n log n)"
+],
+answer: "O(n)"
+},
+{
+question: "9. Which data structure represents hierarchical
+relationships?",
+options: [
+"Queue",
+"Stack",
+"Tree",
+"Linear Array"
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+13
+
+],
+answer: "Tree"
+},
+{
+question: "10. Which sorting algorithm repeatedly compares
+adjacent elements?",
+options: [
+"Binary Search",
+"Bubble Sort",
+"Merge Sort only",
+"Tree Traversal"
+],
+answer: "Bubble Sort"
+}
+];
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+// Display the current question
+function showQuestion() {
+answered = false;
+document.getElementById("message").innerText = "";
+document.getElementById("score").innerText =
+"Score: " + score;
+document.getElementById("questionNumber").innerText =
+"QUESTION " +
+String(currentQuestion + 1).padStart(2, "0") +
+" OF " +
+String(questions.length).padStart(2, "0");
+document.getElementById("question").innerText =
+questions[currentQuestion].question;
+// Update progress bar
+document.getElementById("progressBar").style.width =
+((currentQuestion + 1) / questions.length * 100) + "%";
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+14
+
+let optionsBox = document.getElementById("options");
+optionsBox.innerHTML = "";
+// Create answer buttons
+for (let i = 0; i < questions[currentQuestion].options.length; i++) {
+let btn = document.createElement("button");
+btn.innerText =
+String.fromCharCode(65 + i) + ". " +
+questions[currentQuestion].options[i];
+btn.className =
+"answer-btn text-gray-200 text-left p-4 rounded-lg w-full";
+btn.type = "button";
+btn.onclick = function () {
+checkAnswer(
+questions[currentQuestion].options[i],
+btn
+);
+};
+optionsBox.appendChild(btn);
+}
+// Update the navigation button
+if (currentQuestion == questions.length - 1) {
+document.getElementById("nextBtn").innerText =
+"View Results →";
+} else {
+document.getElementById("nextBtn").innerText =
+"Next Question →";
+}
+}
+// Check the selected answer
+function checkAnswer(selectedAnswer, selectedButton) {
+if (answered) {
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+15
+
+return;
+}
+answered = true;
+let allButtons = document.querySelectorAll(".answer-btn");
+// Disable options after selection
+allButtons.forEach(function (btn) {
+btn.disabled = true;
+});
+if (selectedAnswer == questions[currentQuestion].answer) {
+score++;
+selectedButton.classList.add("correct");
+document.getElementById("message").innerText =
+"Correct! Well done.";
+document.getElementById("message").style.color = "#34d399";
+} else {
+selectedButton.classList.add("wrong");
+document.getElementById("message").innerText =
+"Incorrect. Correct answer: " +
+questions[currentQuestion].answer;
+document.getElementById("message").style.color = "#fb7185";
+// Highlight the correct answer
+allButtons.forEach(function (btn) {
+if (btn.innerText.substring(3) ==
+questions[currentQuestion].answer) {
+btn.classList.add("correct");
+}
+});
+}
+document.getElementById("score").innerText =
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+16
+
+"Score: " + score;
+}
+// Move to the next question or show results
+function nextQuestion() {
+if (!answered) {
+document.getElementById("message").innerText =
+"Please select an answer before continuing.";
+document.getElementById("message").style.color = "#fbbf24";
+return;
+}
+if (currentQuestion < questions.length - 1) {
+currentQuestion++;
+showQuestion();
+} else {
+showResult();
+}
+}
+// Display final results
+function showResult() {
+document.getElementById("quizContent").classList.add("hidden");
+document.getElementById("resultContent").classList.remove("hidden");
+let percentage = Math.round(
+(score / questions.length) * 100
+);
+document.getElementById("finalScore").innerText =
+score + "/" + questions.length;
+document.getElementById("percentage").innerText =
+percentage + "%";
+if (percentage == 100) {
+document.getElementById("resultMessage").innerText =
+"Excellent work! You answered every question correctly.";
+} else if (percentage >= 60) {
+
+FACULTY OF ENGINEERING AND
+TECHNOLOGY
+Department of Computer Engineering
+01CE1306 – Web Technology – Lab #1
+
+MANISH SHARMA (92500120114)
+
+17
+
+document.getElementById("resultMessage").innerText =
+"Good effort! Keep practising to strengthen your knowledge.";
+} else {
+document.getElementById("resultMessage").innerText =
+"Keep learning! Review the fundamentals and try again.";
+}
+}
+// Restart the assessment
+function restartQuiz() {
+currentQuestion = 0;
+score = 0;
+answered = false;
+document.getElementById("quizContent").classList.remove("hidden");
+document.getElementById("resultContent").classList.add("hidden");
+showQuestion();
+}
+// Start the quiz
+showQuestion();
+</script>
+</body>
+</html>
